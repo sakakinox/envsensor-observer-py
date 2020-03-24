@@ -295,7 +295,7 @@ def _handle_num_completed_packets(pkt):
     pkt = pkt[1:]
     result["num_connection_handles"] = num_connection_handles
     result["handles"] = []
-    for i in xrange(num_connection_handles):
+    for i in range(num_connection_handles):
         handle, = struct.unpack("<H", pkt[0:2])
         completed_packets, = struct.unpack("<H", pkt[2:4])
         result["handles"].append(
@@ -310,7 +310,7 @@ def _handle_inquiry_result_with_rssi(pkt):
     pkt = pkt[1:]
     result["num_inquiry_results"] = num_inquiry_results
     result["inquiry_results"] = []
-    for i in xrange(num_inquiry_results):
+    for i in range(num_inquiry_results):
         addr = bluez.ba2str(pkt[(6 * i):(6 * i) + 6])
         rssi = struct.unpack("b", pkt[(13 * num_inquiry_results) + i])[0]
         result["inquiry_results"].append({"Address": addr, "RSSI": rssi})
@@ -323,7 +323,7 @@ def _handle_inquiry_result(pkt):
     pkt = pkt[1:]
     result["num_inquiry_results"] = num_inquiry_results
     result["inquiry_results"] = []
-    for i in xrange(num_inquiry_results):
+    for i in range(num_inquiry_results):
         addr = bluez.ba2str(pkt[(6 * i):(6 * i) + 6])
         result["inquiry_results"].append({"Address": addr})
     return result
@@ -332,7 +332,7 @@ def _handle_inquiry_result(pkt):
     pkt = pkt[1:]
     result["num_connection_handles"] = num_connection_handles
     result["handles"] = []
-    for i in xrange(num_connection_handles):
+    for i in range(num_connection_handles):
         handle, = struct.unpack("<H", pkt[0:2])
         completed_packets, = struct.unpack("<H", pkt[2:4])
         result["handles"].append(
@@ -443,7 +443,7 @@ def _handle_le_advertising_report(pkt):
     report_pkt_offset = 0
     result["number_of_advertising_reports"] = num_reports
     result["advertising_reports"] = []
-    for i in xrange(0, num_reports):
+    for i in range(0, num_reports):
         report = {}
 
         report_event_type = struct.unpack("<B", pkt[report_pkt_offset + 1])[0]
@@ -520,14 +520,14 @@ def short_bt_address(btAddr):
 
 def packet_as_hex_string(pkt, flag_with_spacing=False,
                          flag_force_capitalize=False):
-    packet = ""
+    packet = "".encode('utf-8')
     space = ""
     if (flag_with_spacing):
-        space = " "
+        space = " ".encode('utf-8')
     for b in pkt:
-        packet = packet + "%02x" % struct.unpack("<B", b)[0] + space
+        packet = packet + "%02x".encode('utf-8') % struct.unpack("<B", b)[0] + space
     if (flag_force_capitalize):
-        packet = packet.upper()
+        packet = packet.upper().encode('utf-8')
     return packet
 
 
