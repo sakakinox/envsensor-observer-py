@@ -511,7 +511,7 @@ def get_packed_bdaddr(bdaddr_string):
 
 def packed_bdaddr_to_string(bdaddr_packed):
     return ':'.join('%02x' % i for i in struct.unpack("<BBBBBB",
-                                                      bdaddr_packed[::-1]))
+                                                      str(bdaddr_packed[::-1]).encode('utf-8')))
 
 
 def short_bt_address(btAddr):
@@ -551,7 +551,7 @@ def reset_hci():
 
 
 def get_companyid(pkt):
-    return (struct.unpack("<B", pkt[1])[0] << 8) | \
+    return (struct.unpack("<B", str(pkt[1]).encode('utf-8'))[0] << 8) | \
         struct.unpack("<B", pkt[0])[0]
 
 

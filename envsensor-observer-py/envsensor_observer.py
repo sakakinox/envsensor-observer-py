@@ -238,7 +238,7 @@ if __name__ == "__main__":
         flag_scanning_started = False
 
         # process command line arguments
-        debug = False
+        debug = True
         args = arg_parse()
         if args.debug:
             debug = True
