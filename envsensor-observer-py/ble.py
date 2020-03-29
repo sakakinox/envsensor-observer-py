@@ -326,7 +326,7 @@ def _handle_inquiry_result(pkt):
     for i in range(num_inquiry_results):
         addr = bluez.ba2str(pkt[(6 * i):(6 * i) + 6])
         result["inquiry_results"].append({"Address": addr})
-    return result
+        return result
 
     num_connection_handles = struct.unpack("<B", pkt[0])[0]
     pkt = pkt[1:]
@@ -348,7 +348,7 @@ def _handle_disconn_complete(pkt):
 
 def _handle_le_meta_event(pkt):
     result = {}
-    subevent, = struct.unpack("B", pkt[0])
+    subevent, = struct.unpack("B", str(pkt[0]).encode('utf-8'))
     result["bluetooth_le_subevent_id"] = subevent
     pkt = pkt[1:]
     if subevent == EVT_LE_ADVERTISING_REPORT:
@@ -520,14 +520,14 @@ def short_bt_address(btAddr):
 
 def packet_as_hex_string(pkt, flag_with_spacing=False,
                          flag_force_capitalize=False):
-    packet = "".encode('utf-8')
+    packet = ""
     space = ""
     if (flag_with_spacing):
-        space = " ".encode('utf-8')
-    for b in pkt:
-        packet = packet + "%02x".encode('utf-8') % struct.unpack("<B", b)[0] + space
+        space = " "
+    for b in str(pkt):
+        packet = packet + "%02x" % struct.unpack("<B", b.encode('utf-8')) + space
     if (flag_force_capitalize):
-        packet = packet.upper().encode('utf-8')
+        packet = packet.upper()
     return packet
 
 
